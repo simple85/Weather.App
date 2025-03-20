@@ -31,6 +31,8 @@ public class WeatherAppGui extends JFrame {
         searchButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         searchButton.setBounds(375, 13, 45, 45);
         add(searchButton);
+
+        //JLabel weatherConditionImage = new JLabel(loadImage());
     }
 
     private ImageIcon loadImage(String filePath) {
