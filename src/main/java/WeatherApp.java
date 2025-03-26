@@ -57,8 +57,30 @@ public class WeatherApp {
             JSONArray time = (JSONArray) hourly.get("time");
             int index = findIndexOfCurrentTime(time);
 
+            //get temperature
             JSONArray temperatureData = (JSONArray) hourly.get("temperature_2m");
+            double temperature = (double) temperatureData.get(index);
 
+            //get weather code
+            JSONArray weatherCode = (JSONArray) hourly.get("weather_code");
+            String weatherCondition = convertWeatherCode((long) weatherCode.get(index));
+
+            //get humidity
+            JSONArray relativeHumdity = (JSONArray) hourly.get("relativehumidty_2m");
+            long humidity = (long) relativeHumdity.get(index);
+
+            //get windspeed
+            JSONArray windspeedData = (JSONArray) hourly.get("windspeed_10m");
+            double windspeed = (double) windspeedData.get(index);
+
+            //build weather json data object to access in the frontend
+            JSONObject weatherData = new JSONObject();
+            weatherData.put("temperature", temperature);
+            weatherData.put("weather_condition", weatherCondition);
+            weatherData.put("humidity", humidity);
+            weatherData.put("windspeed", windspeed);
+
+            return weatherData;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -150,5 +172,99 @@ public class WeatherApp {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH':00'");
         String formattedDateTime = formatter.format(currentDateTime);
         return formattedDateTime;
+    }
+    //convert weather code to something readable
+    private static String convertWeatherCode(long weathercode) {
+        String weatherCondition = "";
+        switch ((int) weathercode) {
+            case 0:
+                weatherCondition = "Clear";
+                break;
+            case 1:
+                weatherCondition = "Mainly Clear";
+                break;
+            case 2:
+                weatherCondition = "Partly Cloudy";
+                break;
+            case 3:
+                weatherCondition = "Overcast";
+                break;
+            case 45:
+                weatherCondition = "Fog";
+                break;
+            case 48:
+                weatherCondition = "Depositing Rime Fog";
+                break;
+            case 51:
+                weatherCondition = "Light Drizzle";
+                break;
+            case 53:
+                weatherCondition = "Moderate Drizzle";
+                break;
+            case 55:
+                weatherCondition = "Dense Drizzle";
+                break;
+            case 56:
+                weatherCondition = "Light Freezing Drizzle";
+                break;
+            case 57:
+                weatherCondition = "Dense Freezing Drizzle";
+                break;
+            case 61:
+                weatherCondition = "Slight Rain";
+                break;
+            case 63:
+                weatherCondition = "Moderate Rain";
+                break;
+            case 65:
+                weatherCondition = "Heavy Rain";
+                break;
+            case 66:
+                weatherCondition = "Light Freezing Rain";
+                break;
+            case 67:
+                weatherCondition = "Heavy Freezing Rain";
+                break;
+            case 71:
+                weatherCondition = "Slight Snow Fall";
+                break;
+            case 73:
+                weatherCondition = "Moderate Snow Fall";
+                break;
+            case 75:
+                weatherCondition = "Heavy Snow Fall";
+                break;
+            case 77:
+                weatherCondition = "Snow Grains";
+                break;
+            case 80:
+                weatherCondition = "Slight Rain Showers";
+                break;
+            case 81:
+                weatherCondition = "Moderate Rain Showers";
+                break;
+            case 82:
+                weatherCondition = "Violent Rain Showers";
+                break;
+            case 85:
+                weatherCondition = "Slight Snow Showers";
+                break;
+            case 86:
+                weatherCondition = "Heavy Snow Showers";
+                break;
+            case 95:
+                weatherCondition = "Thunderstorm";
+                break;
+            case 96:
+                weatherCondition = "Thunderstorm With Slight Hail";
+                break;
+            case 99:
+                weatherCondition = "Thunderstorm With Heavy Hail";
+                break;
+            default:
+                weatherCondition = "Error";
+
+        }
+        return weatherCondition;
     }
 }
