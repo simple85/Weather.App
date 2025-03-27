@@ -24,7 +24,7 @@ public class WeatherApp {
         //build API request wth location coordinates
         String urlString = "https://api.open-meteo.com/v1/forecast?latitude="+
                 latitude + "&longitude=" +
-                longitude + "&hourly=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m&timezone=Turkey%2Istanbul";
+                longitude + "&hourly=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m";
 
         try {
             //Call API and get response
@@ -66,11 +66,11 @@ public class WeatherApp {
             String weatherCondition = convertWeatherCode((long) weatherCode.get(index));
 
             //get humidity
-            JSONArray relativeHumdity = (JSONArray) hourly.get("relativehumidty_2m");
+            JSONArray relativeHumdity = (JSONArray) hourly.get("relative_humidity_2m");
             long humidity = (long) relativeHumdity.get(index);
 
             //get windspeed
-            JSONArray windspeedData = (JSONArray) hourly.get("windspeed_10m");
+            JSONArray windspeedData = (JSONArray) hourly.get("wind_speed_10m");
             double windspeed = (double) windspeedData.get(index);
 
             //build weather json data object to access in the frontend
